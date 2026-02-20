@@ -1,4 +1,4 @@
-# 🚚 Ultra Doc-Intelligence
+#  Ultra Doc-Intelligence
 
 **AI-powered Logistics Document Intelligence System with RAG capabilities**
 
@@ -6,7 +6,7 @@ A Production-Ready POC system that allows users to upload logistics documents (B
 
 ---
 
-## 📌 Submission
+##  Submission
 
 | Requirement | Link |
 |-------------|------|
@@ -18,7 +18,7 @@ A Production-Ready POC system that allows users to upload logistics documents (B
 
 ---
 
-## 📋 Table of Contents
+##  Table of Contents
 
 - [Submission](#-submission)
 - [Features](#features)
@@ -33,17 +33,17 @@ A Production-Ready POC system that allows users to upload logistics documents (B
 
 ---
 
-## ✨ Features
+##  Features
 
 ### Core Features
-- ✅ **Document Upload & Processing**: Supports PDF, DOCX, and TXT formats
-- ✅ **Intelligent Chunking**: Sentence-aware chunking with overlap for context preservation
-- ✅ **RAG System**: Vector-based retrieval with semantic search
-- ✅ **Natural Language Q&A**: Ask questions about uploaded documents
-- ✅ **Guardrails**: Multiple safety checks to prevent hallucinations
-- ✅ **Confidence Scoring**: Multi-factor confidence calculation
-- ✅ **Structured Extraction**: Extract shipment data as JSON
-- ✅ **Minimal UI**: Clean, user-friendly web interface
+-  **Document Upload & Processing**: Supports PDF, DOCX, and TXT formats
+-  **Intelligent Chunking**: Sentence-aware chunking with overlap for context preservation
+-  **RAG System**: Vector-based retrieval with semantic search
+-  **Natural Language Q&A**: Ask questions about uploaded documents
+-  **Guardrails**: Multiple safety checks to prevent hallucinations
+-  **Confidence Scoring**: Multi-factor confidence calculation
+-  **Structured Extraction**: Extract shipment data as JSON
+-  **Minimal UI**: Clean, user-friendly web interface
 
 ### Advanced Features
 - **Grounded Answers**: Answers only from document context
@@ -53,7 +53,7 @@ A Production-Ready POC system that allows users to upload logistics documents (B
 
 ---
 
-## 🏗️ Architecture
+##  Architecture
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -123,7 +123,7 @@ A Production-Ready POC system that allows users to upload logistics documents (B
 
 ---
 
-## 🛠️ Tech Stack
+##  Tech Stack
 
 ### Backend
 - **FastAPI**: Modern, fast web framework for APIs
@@ -144,7 +144,7 @@ A Production-Ready POC system that allows users to upload logistics documents (B
 
 ---
 
-## 📦 Installation
+##  Installation
 
 ### Prerequisites
 - Python 3.8 or higher
@@ -178,7 +178,7 @@ A Production-Ready POC system that allows users to upload logistics documents (B
 
 ---
 
-## 🚀 Usage
+##  Usage
 
 ### Running Locally
 
@@ -213,7 +213,7 @@ Test with the provided sample documents in `sample_documents/`:
 
 ---
 
-## 🔌 API Endpoints
+##  API Endpoints
 
 ### `POST /upload`
 Upload and process a document.
@@ -376,21 +376,21 @@ confidence = (
 
 ---
 
-## ✅ Evaluation Criteria Coverage
+##  Evaluation Criteria Coverage
 
 | Criterion | Implementation |
 |-----------|---------------|
-| **Retrieval Grounding Quality** | ✅ Vector similarity search with top-K retrieval, source attribution |
-| **Extraction Accuracy** | ✅ LLM + rule-based fallback, JSON schema validation |
-| **Guardrail Effectiveness** | ✅ Multi-layer guardrails (similarity, quality, grounding) |
-| **Confidence Scoring Logic** | ✅ Multi-factor scoring with transparency |
-| **Code Structure** | ✅ Modular design, separation of concerns, clean code |
-| **End-to-End Usability** | ✅ Simple UI, clear error messages, example questions |
-| **Practical AI Engineering** | ✅ Fallback mechanisms, error handling, scalability considerations |
+| **Retrieval Grounding Quality** | Vector similarity search with top-K retrieval, source attribution |
+| **Extraction Accuracy** |  LLM + rule-based fallback, JSON schema validation |
+| **Guardrail Effectiveness** |  Multi-layer guardrails (similarity, quality, grounding) |
+| **Confidence Scoring Logic** |  Multi-factor scoring with transparency |
+| **Code Structure** |  Modular design, separation of concerns, clean code |
+| **End-to-End Usability** |  Simple UI, clear error messages, example questions |
+| **Practical AI Engineering** |  Fallback mechanisms, error handling, scalability considerations |
 
 ---
 
-## 🚧 Failure Cases & Handling
+##  Failure Cases & Handling
 
 ### Document Processing Failures
 - **Unsupported format**: Returns 400 error with allowed types
@@ -414,7 +414,7 @@ confidence = (
 
 ---
 
-## 🔮 Future Improvements
+##  Future Improvements
 
 ### Short-Term
 1. **Vector Database**: Replace in-memory store with FAISS or Pinecone
@@ -444,7 +444,7 @@ confidence = (
 
 ---
 
-## 📝 Notes
+##  Notes
 
 - **LLM API Key**: Optional but recommended for best results. System works with fallback methods.
 - **Performance**: First document processing may take 10-30 seconds (embedding generation). Subsequent queries are fast.
@@ -452,7 +452,7 @@ confidence = (
 
 ---
 
-## 👤 Author
+##  Author
 
 **Abhishek Jindal**
 - Data Scientist | AI/ML Engineer
@@ -460,10 +460,10 @@ confidence = (
 
 ---
 
-## 📄 License
+##  License
 
 This project is a POC for evaluation purposes.
 
 ---
 
-**Built with ❤️ using FastAPI, RAG, and modern AI engineering practices**
+**Built with  using FastAPI, RAG, and modern AI engineering practices**
