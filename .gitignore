@@ -1,0 +1,48 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+.venv
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Environment variables (never commit real keys)
+.env
+.env.local
+.env.*.local
+*.env
+!.env.example
+
+# Uploads (keep sample_documents for repo)
+uploads/
+*.pdf
+*.docx
+*.txt
+!requirements.txt
+!sample_documents/*.pdf
+!sample_documents/*.docx
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Model cache
+.cache/
+models/
+
+# Submission zips (do not commit)
+*.zip
+!sample_documents/

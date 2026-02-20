@@ -1,0 +1,13 @@
+# Render.com Blueprint - Ultra Doc-Intelligence
+# Deploy: Connect this repo at https://dashboard.render.com and create Web Service from repo,
+# or use: https://render.com/deploy?repo=https://github.com/abhisek-futx-da/ultra-doc-intelligence
+
+services:
+  - type: web
+    name: ultra-doc-intelligence
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0

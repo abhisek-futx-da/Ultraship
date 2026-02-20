@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AI-powered Logistics Document Intelligence — upload documents, ask questions, extract structured data.">
+    <title>Ultra Doc-Intelligence | Logistics Document AI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-page: #f1f5f9;
+            --bg-card: #ffffff;
+            --bg-muted: #f8fafc;
+            --border: #e2e8f0;
+            --border-focus: #0f172a;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-muted: #64748b;
+            --accent: #0f172a;
+            --accent-hover: #1e293b;
+            --success-bg: #ecfdf5;
+            --success-text: #065f46;
+            --success-border: #a7f3d0;
+            --warning-bg: #fffbeb;
+            --warning-text: #92400e;
+            --error-bg: #fef2f2;
+            --error-text: #991b1b;
+            --error-border: #fecaca;
+            --radius: 10px;
+            --radius-sm: 6px;
+            --shadow: 0 1px 3px rgba(0,0,0,0.06);
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.07), 0 2px 4px -2px rgba(0,0,0,0.05);
+            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.08), 0 4px 6px -4px rgba(0,0,0,0.04);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg-page);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .app-header {
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 1.5rem;
+        }
+
+        .app-header-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo {
+            width: 40px;
+            height: 40px;
+            background: var(--accent);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            color: white;
+        }
+
+        .app-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .app-tagline {
+            font-size: 0.8125rem;
+            color: var(--text-muted);
+            margin-top: 1px;
+        }
+
+        .main {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem 3rem;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+        }
+
+        .card-header {
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid var(--border);
+            background: var(--bg-muted);
+        }
+
+        .card-header h2 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            letter-spacing: -0.01em;
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        .upload-zone {
+            border: 2px dashed var(--border);
+            border-radius: var(--radius);
+            padding: 2.5rem 1.5rem;
+            text-align: center;
+            background: var(--bg-muted);
+            cursor: pointer;
+            transition: border-color 0.2s, background 0.2s;
+        }
+
+        .upload-zone:hover,
+        .upload-zone.dragover {
+            border-color: var(--text-muted);
+            background: var(--bg-card);
+        }
+
+        .upload-zone-icon {
+            font-size: 2rem;
+            margin-bottom: 0.75rem;
+            opacity: 0.7;
+        }
+
+        .upload-zone-title {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .upload-zone-hint {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .status {
+            margin-top: 1rem;
+            padding: 0.75rem 1rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.875rem;
+            display: none;
+        }
+
+        .status.success {
+            background: var(--success-bg);
+            color: var(--success-text);
+            border: 1px solid var(--success-border);
+        }
+
+        .status.error {
+            background: var(--error-bg);
+            color: var(--error-text);
+            border: 1px solid var(--error-border);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 0.625rem 1.25rem;
+            border-radius: var(--radius-sm);
+            font-family: inherit;
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+        }
+
+        .btn:hover {
+            background: var(--accent-hover);
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .question-row {
+            display: flex;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .question-input {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-family: inherit;
+            font-size: 0.9375rem;
+            color: var(--text-primary);
+            background: var(--bg-card);
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .question-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .question-input:focus {
+            outline: none;
+            border-color: var(--border-focus);
+            box-shadow: 0 0 0 3px rgba(15, 23, 42, 0.08);
+        }
+
+        .examples {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: var(--bg-muted);
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border);
+        }
+
+        .examples-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        .example-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .example-chip {
+            padding: 0.375rem 0.75rem;
+            border-radius: 999px;
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            cursor: pointer;
+            transition: border-color 0.2s, background 0.2s, color 0.2s;
+        }
+
+        .example-chip:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: var(--bg-muted);
+        }
+
+        .answer-card {
+            margin-top: 1.25rem;
+            padding: 1.25rem;
+            background: var(--bg-muted);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+        }
+
+        .answer-card h3 {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        .confidence-badge {
+            display: inline-block;
+            padding: 0.25rem 0.625rem;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .confidence-badge.high {
+            background: var(--success-bg);
+            color: var(--success-text);
+        }
+
+        .confidence-badge.medium {
+            background: var(--warning-bg);
+            color: var(--warning-text);
+        }
+
+        .confidence-badge.low {
+            background: var(--error-bg);
+            color: var(--error-text);
+        }
+
+        .answer-text {
+            color: var(--text-primary);
+            font-size: 0.9375rem;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .source-block {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            border-left: 3px solid var(--accent);
+        }
+
+        .source-block h4 {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: var(--text-muted);
+            margin-bottom: 0.375rem;
+        }
+
+        .source-block p {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .extracted-table-wrap {
+            margin-top: 1rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+        }
+
+        .extracted-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.875rem;
+        }
+
+        .extracted-table th,
+        .extracted-table td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .extracted-table th {
+            background: var(--bg-muted);
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        .extracted-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .extracted-table td {
+            color: var(--text-primary);
+        }
+
+        .extracted-table td strong {
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .spinner {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+
+        .spinner-dot {
+            width: 18px;
+            height: 18px;
+            border: 2px solid var(--border);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .section-num {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 22px;
+            height: 22px;
+            background: var(--accent);
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 700;
+            border-radius: 6px;
+            margin-right: 0.5rem;
+        }
+
+        .guardrail-notice {
+            margin-top: 0.75rem;
+            padding: 0.75rem;
+            background: var(--error-bg);
+            border: 1px solid var(--error-border);
+            border-radius: var(--radius-sm);
+            font-size: 0.875rem;
+            color: var(--error-text);
+        }
+
+        .sources-title {
+            font-size: 0.8125rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-top: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <header class="app-header">
+        <div class="app-header-inner">
+            <div class="logo" aria-hidden="true">📄</div>
+            <div>
+                <h1 class="app-title">Ultra Doc-Intelligence</h1>
+                <p class="app-tagline">AI-powered logistics document intelligence</p>
+            </div>
+        </div>
+    </header>
+
+    <main class="main">
+        <!-- Document Upload -->
+        <section class="card">
+            <div class="card-header">
+                <h2><span class="section-num">1</span> Upload document</h2>
+            </div>
+            <div class="card-body">
+                <div class="upload-zone" id="uploadArea">
+                    <div class="upload-zone-icon">📤</div>
+                    <p class="upload-zone-title">Drag and drop or click to upload</p>
+                    <p class="upload-zone-hint">PDF, DOCX, or TXT — max size as per server limits</p>
+                    <input type="file" id="fileInput" accept=".pdf,.docx,.txt">
+                </div>
+                <div id="uploadStatus" class="status"></div>
+            </div>
+        </section>
+
+        <!-- Ask questions -->
+        <section class="card">
+            <div class="card-header">
+                <h2><span class="section-num">2</span> Ask questions</h2>
+            </div>
+            <div class="card-body">
+                <div class="question-row">
+                    <input type="text" class="question-input" id="questionInput"
+                           placeholder="Ask anything about the uploaded document…"
+                           autocomplete="off">
+                    <button type="button" class="btn" onclick="askQuestion()">Ask</button>
+                </div>
+                <div class="examples">
+                    <p class="examples-label">Example questions</p>
+                    <div class="example-chips">
+                        <button type="button" class="example-chip" onclick="setQuestion('What is the carrier rate?')">What is the carrier rate?</button>
+                        <button type="button" class="example-chip" onclick="setQuestion('When is pickup scheduled?')">When is pickup scheduled?</button>
+                        <button type="button" class="example-chip" onclick="setQuestion('Who is the consignee?')">Who is the consignee?</button>
+                        <button type="button" class="example-chip" onclick="setQuestion('What is the shipment ID?')">What is the shipment ID?</button>
+                    </div>
+                </div>
+                <div id="answerContainer"></div>
+            </div>
+        </section>
+
+        <!-- Structured extraction -->
+        <section class="card">
+            <div class="card-header">
+                <h2><span class="section-num">3</span> Extract structured data</h2>
+            </div>
+            <div class="card-body">
+                <button type="button" class="btn" onclick="extractData()">Extract shipment data</button>
+                <div id="extractContainer"></div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const API_BASE = window.location.origin;
+        let currentDocumentId = null;
+
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+        const uploadStatus = document.getElementById('uploadStatus');
+
+        uploadArea.addEventListener('click', (e) => { if (!e.target.classList.contains('example-chip')) fileInput.click(); });
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+        uploadArea.addEventListener('dragleave', () => uploadArea.classList.remove('dragover'));
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            if (e.dataTransfer.files.length) handleFileUpload(e.dataTransfer.files[0]);
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length) handleFileUpload(e.target.files[0]);
+        });
+
+        async function handleFileUpload(file) {
+            const formData = new FormData();
+            formData.append('file', file);
+
+            uploadStatus.style.display = 'block';
+            uploadStatus.className = 'status';
+            uploadStatus.textContent = 'Uploading and processing…';
+
+            try {
+                const response = await fetch(`${API_BASE}/upload`, { method: 'POST', body: formData });
+                const data = await response.json();
+
+                if (response.ok) {
+                    uploadStatus.className = 'status success';
+                    uploadStatus.textContent = `Document processed. ${data.chunks_count} chunks indexed.`;
+                    currentDocumentId = data.document_id;
+                } else {
+                    throw new Error(data.detail || 'Upload failed');
+                }
+            } catch (err) {
+                uploadStatus.className = 'status error';
+                uploadStatus.textContent = err.message || 'Upload failed';
+            }
+        }
+
+        function setQuestion(q) {
+            document.getElementById('questionInput').value = q;
+            document.getElementById('questionInput').focus();
+        }
+
+        async function askQuestion() {
+            const question = document.getElementById('questionInput').value.trim();
+            if (!question) return;
+
+            const container = document.getElementById('answerContainer');
+            container.innerHTML = '<div class="spinner"><span class="spinner-dot"></span> Processing…</div>';
+
+            try {
+                const response = await fetch(`${API_BASE}/ask`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ question, document_id: currentDocumentId })
+                });
+                const data = await response.json();
+
+                if (response.ok) {
+                    displayAnswer(data);
+                } else {
+                    throw new Error(data.detail || 'Request failed');
+                }
+            } catch (err) {
+                container.innerHTML = `<div class="status error">${err.message}</div>`;
+            }
+        }
+
+        function displayAnswer(data) {
+            const container = document.getElementById('answerContainer');
+            let confidenceClass = 'low';
+            if (data.confidence_score >= 0.7) confidenceClass = 'high';
+            else if (data.confidence_score >= 0.4) confidenceClass = 'medium';
+
+            let html = `
+                <div class="answer-card">
+                    <h3>Answer</h3>
+                    <span class="confidence-badge ${confidenceClass}">${(data.confidence_score * 100).toFixed(0)}% confidence</span>
+                    ${data.guardrail_triggered ? `<div class="guardrail-notice">${data.reason || 'Guardrail triggered'}</div>` : ''}
+                    <div class="answer-text">${data.answer}</div>
+            `;
+
+            if (data.source_text && data.source_text.length > 0) {
+                html += '<p class="sources-title">Source text</p>';
+                data.source_text.forEach((source, idx) => {
+                    html += `
+                        <div class="source-block">
+                            <h4>Source ${idx + 1} · ${(source.similarity * 100).toFixed(0)}% match</h4>
+                            <p>${source.text}</p>
+                        </div>
+                    `;
+                });
+            }
+            html += '</div>';
+            container.innerHTML = html;
+        }
+
+        function escapeHtml(str) {
+            if (str == null) return '';
+            var div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+
+        async function extractData() {
+            var container = document.getElementById('extractContainer');
+            if (!container) return;
+
+            if (!currentDocumentId) {
+                container.innerHTML = '<div class="status error">Upload a document first (step 1). After you see "Document processed…" above, click "Extract shipment data" again.</div>';
+                return;
+            }
+
+            container.innerHTML = '<div class="spinner"><span class="spinner-dot"></span> Extracting…</div>';
+
+            try {
+                var response = await fetch(API_BASE + '/extract', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ document_id: currentDocumentId })
+                });
+                var responseText = await response.text();
+                var data;
+                try {
+                    data = JSON.parse(responseText);
+                } catch (e) {
+                    container.innerHTML = '<div class="status error">Server returned invalid JSON. Status: ' + response.status + '. Try again.</div>';
+                    return;
+                }
+
+                if (!response.ok) {
+                    var msg = Array.isArray(data.detail)
+                        ? (data.detail.map(function (d) { return d.msg || (d.loc ? d.loc.join('.') : ''); }).filter(Boolean).join('; ') || 'Extraction failed')
+                        : (data.detail || 'Extraction failed');
+                    container.innerHTML = '<div class="status error">' + escapeHtml(msg) + '</div>';
+                    return;
+                }
+
+                var payload = data && data.data !== undefined ? data.data : data;
+                if (payload && typeof payload === 'object' && !Array.isArray(payload)) {
+                    try {
+                        displayExtractedData(payload);
+                    } catch (e) {
+                        container.innerHTML = '<div class="status error">Could not display table. Raw: <pre>' + escapeHtml(responseText.slice(0, 800)) + '</pre></div>';
+                    }
+                } else {
+                    container.innerHTML = '<div class="status error">No data in response. Server returned: <pre>' + escapeHtml(responseText.slice(0, 500)) + '</pre></div>';
+                }
+            } catch (err) {
+                container.innerHTML = '<div class="status error">' + escapeHtml(err.message || 'Extraction failed') + '</div>';
+            }
+        }
+
+        function displayExtractedData(data) {
+            var container = document.getElementById('extractContainer');
+            if (!container) return;
+            if (!data || typeof data !== 'object' || Array.isArray(data)) {
+                container.innerHTML = '<div class="status error">No structured data could be extracted from the document.</div>';
+                return;
+            }
+            var entries = Object.entries(data);
+            if (entries.length === 0) {
+                container.innerHTML = '<div class="status error">No fields extracted. The document may be empty or in an unsupported format.</div>';
+                return;
+            }
+            var rows = '';
+            for (var i = 0; i < entries.length; i++) {
+                var key = entries[i][0];
+                var value = entries[i][1];
+                var label = key.replace(/_/g, ' ').replace(/\b\w/g, function (c) { return c.toUpperCase(); });
+                var val = value != null && value !== '' ? String(value) : '—';
+                rows += '<tr><td><strong>' + escapeHtml(label) + '</strong></td><td>' + escapeHtml(val) + '</td></tr>';
+            }
+            container.innerHTML = '<p class="sources-title" style="margin-bottom:0.5rem;">Extracted data</p><div class="extracted-table-wrap"><table class="extracted-table"><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody>' + rows + '</tbody></table></div>';
+        }
+
+        document.getElementById('questionInput').addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') askQuestion();
+        });
+    </script>
+</body>
+</html>
